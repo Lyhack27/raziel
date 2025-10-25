@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raziel Insulation - Insulation Experts in Melbourne</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hero-bg {
+            background-color: #0a192f;
+            background-image: linear-gradient(135deg, #0a192f 0%, #172a46 100%);
+        }
+        .brand-text-raziel {
+            font-weight: 900; /* Black */
+            font-size: 2.5rem;
+            letter-spacing: -0.05em;
+            color: white;
+        }
+        .brand-text-insulation {
+            display: block;
+            background-color: #e53e3e; /* red-600 */
+            color: white;
+            padding: 0.25rem 1rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-top: -10px;
+            text-align: center;
+        }
+        .brand-text-melbourne {
+            color: #cbd5e1; /* slate-300 */
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-align: right;
+            margin-top: 4px;
+            padding-right: 1rem;
+        }
+        .logo-shape {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 60px;
+            z-index: -1;
+        }
+        .logo-shape-red {
+            clip-path: polygon(25% 0, 75% 0, 100% 50%, 50% 50%, 0 50%);
+            background-color: #e53e3e;
+        }
+        .logo-shape-black {
+             clip-path: polygon(0% 50%, 25% 0, 25% 50%);
+             background-color: #1a202c;
+        }
+
+        /* --- Animation Styles --- */
+        @keyframes heatwave-anim {
+            0% { transform: translateY(0); opacity: 0.6; }
+            100% { transform: translateY(-80px); opacity: 0; }
+        }
+        @keyframes snowflake-anim {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(100px); opacity: 0; }
+        }
+        .heatwave {
+            animation: heatwave-anim 3s ease-out infinite;
+            stroke-width: 2;
+            stroke: #f59e0b; /* amber-500 */
+            fill: none;
+        }
+        .snowflake {
+            animation: snowflake-anim 5s linear infinite;
+            fill: #93c5fd; /* blue-300 */
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-300">
+
+    
+    <!-- Navigation -->
+    <nav class="hero-bg sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                
+                <!-- Logo -->
+                <div class="relative inline-block">
+                    <span class="brand-text-raziel">RAZIEL</span>
+                    <span class="brand-text-insulation">INSULATION</span>
+                    <span class="brand-text-melbourne">MELBOURNE</span>
+                </div>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#services" class="hover:text-red-500 transition duration-300">Services</a>
+                <a href="#about" class="hover:text-red-500 transition duration-300">About Us</a>
+                <a href="#why-us" class="hover:text-red-500 transition duration-300">Why Choose Us</a>
+                <a href="#testimonials" class="hover:text-red-500 transition duration-300">Testimonials</a>
+                <a href="#" id="openQuoteModalNav" class="text-amber-400 font-bold hover:text-amber-300 transition duration-300">Instant Quote</a>
+                <a href="#contact" class="bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300">Contact</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-white focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 space-y-2">
+            <a href="#services" class="block hover:text-red-500 transition duration-300">Services</a>
+            <a href="#about" class="block hover:text-red-500 transition duration-300">About Us</a>
+            <a href="#why-us" class="block hover:text-red-500 transition duration-300">Why Choose Us</a>
+            <a href="#testimonials" class="block hover:text-red-500 transition duration-300">Testimonials</a>
+            <a href="#" id="openQuoteModalNavMobile" class="block text-amber-400 font-bold text-center mt-2 hover:text-amber-300 transition duration-300">Instant Quote</a>
+            <a href="#contact" class="block bg-red-600 text-white font-bold py-2 px-4 rounded-lg text-center mt-2 hover:bg-red-700 transition duration-300">Contact</a>
+        </div>
+    </nav>
+
+    
+    <!-- Hero Section -->
+    <header id="home" class="hero-bg relative overflow-hidden">
+        
+        <!-- Background Animation -->
+        <div class="absolute inset-0 z-0 opacity-50">
+            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" viewBox="0 0 400 300">
+                
+                <!-- Left Side: Cold Animation -->
+                <g transform="translate(60, 50)">
+                    <text x="-10" y="10" font-size="16" fill="#93c5fd" font-weight="bold" opacity="0.4">COLD</text>
+                    <g class="snowflake">
+                        <circle cx="10" cy="20" r="3"></circle>
+                        <circle cx="30" cy="40" r="2" style="animation-delay: -1s;"></circle>
+                        <circle cx="50" cy="10" r="3" style="animation-delay: -2.5s;"></circle>
+                        <circle cx="20" cy="60" r="2.5" style="animation-delay: -4s;"></circle>
+                         <circle cx="40" cy="80" r="3" style="animation-delay: -0.5s;"></circle>
+                    </g>
+                </g>
+
+                <!-- Right Side: Heat Animation -->
+                <g transform="translate(280, 50)">
+                    <text x="15" y="10" font-size="16" fill="#f59e0b" font-weight="bold" opacity="0.4">HEAT</text>
+                    
+                    <!-- Sun -->
+                    <circle cx="30" cy="10" r="15" fill="#f59e0b" opacity="0.7"></circle>
+                    
+                    <!-- Heatwaves -->
+                    <g>
+                        <path class="heatwave" d="M10 50 C 20 40, 30 40, 40 50 S 50 60, 60 50"></path>
+                        <path class="heatwave" d="M5 60 C 15 50, 25 50, 35 60 S 45 70, 55 60" style="animation-delay: -1.5s;"></path>
+                        <path class="heatwave" d="M15 70 C 25 60, 35 60, 45 70 S 55 80, 65 70" style="animation-delay: -0.8s;"></path>
+                    </g>
+                </g>
+
+                <!-- Center: House -->
+                <g transform="translate(45, 0)">
+                    
+                    <!-- House Shape -->
+                    <path d="M110 250 L110 180 L150 140 L190 180 L190 250 Z" fill="#ffffff" opacity="0.1" />
+                    <rect x="140" y="210" width="20" height="20" fill="#ffffff" opacity="0.05" />
+                    
+                    <!-- Cool Interior -->
+                    <path id="cool-air" d="M115 245 L115 185 L150 148 L185 185 L185 245 Z" fill="#0ea5e9" opacity="0.2" />
+                </g>
+            </svg>
+        </div>
+
+        <div class="container mx-auto px-6 py-24 text-center relative z-10">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4">Professional Home Insulation in <span class="text-red-500">Melbourne</span></h1>
+            <p class="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-8">Increase comfort, reduce your energy bills, and improve your home's efficiency with our high-quality insulation solutions.</p>
+            <a href="#contact" class="bg-red-600 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-red-700 transition duration-300 transform hover:scale-105">Get a Free Quote</a>
+        </div>
+    </header>
+
+    <main>
+        
+        <!-- Services Section -->
+        <section id="services" class="py-20 bg-slate-800">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">Our Insulation Services</h2>
+                    <p class="text-slate-400 mt-2">Complete solutions for a more comfortable and efficient home.</p>
+                    <div class="w-24 h-1 bg-red-600 mx-auto mt-4"></div>
+                </div>
+                <!-- Changed grid to center 2 items -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    
+                    <!-- Service 1: Insulation Installation -->
+                    <div class="bg-slate-900 rounded-lg p-8 shadow-xl transform hover:-translate-y-2 transition duration-300 group">
+                        <!-- Video Thumbnail -->
+                        <div class="relative mb-4 rounded-lg overflow-hidden">
+                            <img src="https://placehold.co/600x340/172a46/cbd5e1?text=Installation+Video&font=inter" alt="Video thumbnail for insulation installation" class="w-full h-auto aspect-video object-cover">
+                            <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-50 transition-all cursor-pointer">
+                                <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center transform group-hover:scale-110 transition-transform shadow-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 text-white ml-1">
+                                      <path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-red-500 mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3 text-center">Insulation Installation</h3>
+                        <p class="text-slate-400 text-center">Professional installation for ceilings, walls, and floors. We use high-quality materials to ensure maximum energy efficiency and comfort.</p>
+                    </div>
+                    
+                    <!-- Service 2: Insulation Removal & Cleaning -->
+                    <div class="bg-slate-900 rounded-lg p-8 shadow-xl transform hover:-translate-y-2 transition duration-300 group">
+                        <!-- Video Thumbnail -->
+                        <div class="relative mb-4 rounded-lg overflow-hidden">
+                            <img src="https://placehold.co/600x340/172a46/cbd5e1?text=Cleaning+Process+Video&font=inter" alt="Video thumbnail for insulation removal" class="w-full h-auto aspect-video object-cover">
+                            <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-50 transition-all cursor-pointer">
+                                <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center transform group-hover:scale-110 transition-transform shadow-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 text-white ml-1">
+                                      <path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-red-500 mb-4">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12.54 0c.04.03.079.062.118.095m12.305 0a48.697 48.697 0 01-3.478-.397m-12.54 0c-.04.03-.079.062-.118.095m0 0s-1.06.33-1.168.388l-1.38 1.38m1.168-1.768a48.108 48.108 0 013.478.397m-1.168-1.768L3.6 5.79m14.456 0L19.228 3.21A2.25 2.25 0 0017.08 2H6.92a2.25 2.25 0 00-2.148 1.21L3.6 5.79m0 0a48.697 48.697 0 003.478.397M14.74 9l-.346 9m-4.788 0L9.26 9" />
+                           </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3 text-center">Insulation Removal & Cleaning</h3>
+                        <p class="text-slate-400 text-center">Safe and thorough removal of old, damaged, or contaminated insulation. We clean the area to prepare it for new, high-performance materials.</p>
+                        
+                        <!-- Cost Calculator -->
+                        <div class="mt-6 pt-6 border-t border-slate-700">
+                            <h4 class="text-lg font-bold text-white mb-3 text-center">Estimate Your Cleaning Cost</h4>
+                            <p class="text-sm text-slate-400 text-center mb-4">Rate: $16 per m² (approx.)</p>
+                            <div class="flex flex-col sm:flex-row gap-2 items-center">
+                                <input type="number" id="cleaning-area-input" placeholder="Area in m²" class="w-full sm:w-2/3 bg-slate-700 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500" min="0">
+                                <span id="cleaning-cost-result" class="w-full sm:w-1/3 text-center font-bold text-white text-lg p-3 rounded-lg bg-slate-800 whitespace-nowrap">$ 0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        
+        <!-- About Us Section -->
+        <section id="about" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/2">
+                         <img src="https://placehold.co/600x400/172a46/e53e3e?text=Our+Team" alt="Image of the Raziel Insulation team working on a house in Melbourne" class="rounded-lg shadow-xl w-full">
+                    </div>
+                    <div class="md:w-1/2">
+                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">About Raziel Insulation</h2>
+                        <div class="w-24 h-1 bg-red-600 mb-6"></div>
+                        <p class="text-slate-400 mb-4">We are a family-owned business based in Melbourne, dedicated to providing the highest quality insulation solutions. With over 15 years of experience, our team of experts is committed to excellence, energy efficiency, and total customer satisfaction.</p>
+                        <p class="text-slate-400">Our mission is simple: to help Melburnians create more comfortable, healthy, and cost-effective homes through superior insulation and unmatched customer service.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <!-- Why Choose Us Section -->
+        <section id="why-us" class="py-20 bg-slate-800">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">Why Choose Us?</h2>
+                     <p class="text-slate-400 mt-2">We make a difference with our commitment and quality.</p>
+                    <div class="w-24 h-1 bg-red-600 mx-auto mt-4"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                    <div class="bg-slate-900 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-red-500 mb-2">Local Expertise</h3>
+                        <p class="text-slate-400">We know Melbourne's climate and the specific needs of its homes.</p>
+                    </div>
+                    <div class="bg-slate-900 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-red-500 mb-2">Quality Materials</h3>
+                        <p class="text-slate-400">We only use products from the best brands, ensuring durability and performance.</p>
+                    </div>
+                     <div class="bg-slate-900 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-red-500 mb-2">Professional Installation</h3>
+                        <p class="text-slate-400">Our team is certified and takes pride in clean, precise work.</p>
+                    </div>
+                    <div class="bg-slate-900 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-red-500 mb-2">Satisfaction Guaranteed</h3>
+                        <p class="text-slate-400">We don't finish the job until you are 100% satisfied with the result.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">What Our Clients Say</h2>
+                    <p class="text-slate-400 mt-2">Our reputation is built on happy customers.</p>
+                    <div class="w-24 h-1 bg-red-600 mx-auto mt-4"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Testimonial 1 -->
+                    <div class="bg-slate-800 rounded-lg p-8 shadow-xl">
+                        <div class="text-red-500 text-5xl mb-4">"</div>
+                        <p class="text-slate-400 mb-6 italic">"Absolutely fantastic service. The team was professional, clean, and the difference in our home's temperature was noticeable immediately. Our power bills have dropped significantly! Highly recommend Raziel Insulation."</p>
+                        <div class="flex items-center">
+                            <div>
+                                <p class="font-bold text-white">Sarah W.</p>
+                                <p class="text-sm text-slate-500">Richmond, VIC</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Testimonial 2 -->
+                    <div class="bg-slate-800 rounded-lg p-8 shadow-xl">
+                        <div class="text-red-500 text-5xl mb-4">"</div>
+                        <p class="text-slate-400 mb-6 italic">"We survived the last heatwave so comfortably thanks to our new roof insulation. The whole process was seamless, from the initial quote to the final installation. A truly professional outfit."</p>
+                        <div class="flex items-center">
+                            <div>
+                                <p class="font-bold text-white">Michael B.</p>
+                                <p class="text-sm text-slate-500">Essendon, VIC</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Testimonial 3 -->
+                    <div class="bg-slate-800 rounded-lg p-8 shadow-xl">
+                        <div class="text-red-500 text-5xl mb-4">"</div>
+                        <p class="text-slate-400 mb-6 italic">"I was impressed by their attention to detail and knowledge. They explained all the options clearly without any pressure. The installation crew was punctual and respectful of my property. Five stars!"</p>
+                        <div class="flex items-center">
+                             <div>
+                                <p class="font-bold text-white">Jessica L.</p>
+                                <p class="text-sm text-slate-500">St Kilda, VIC</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 bg-slate-800">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">Contact Us</h2>
+                    <p class="text-slate-400 mt-2">Ready to improve your home? Send us a message!</p>
+                    <div class="w-24 h-1 bg-red-600 mx-auto mt-4"></div>
+                </div>
+                <div class="max-w-3xl mx-auto bg-slate-800 p-8 rounded-lg shadow-xl">
+                    <form>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label for="name" class="block text-slate-300 mb-2">Name</label>
+                                <input type="text" id="name" class="w-full bg-slate-700 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-slate-300 mb-2">Email</label>
+                                <input type="email" id="email" class="w-full bg-slate-700 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500">
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                             <label for="phone" class="block text-slate-300 mb-2">Phone</label>
+                             <input type="tel" id="phone" class="w-full bg-slate-700 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500">
+                        </div>
+                        <div class="mb-6">
+                            <label for="message" class="block text-slate-300 mb-2">Message</label>
+                            <textarea id="message" rows="5" class="w-full bg-slate-700 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500"></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="bg-red-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-red-700 transition duration-300">Send Request</button>
+                        </div>
+                    </form>
+                </div>
+                 <div class="text-center mt-12 text-slate-400">
+                    <p>Or call us directly at: <a href="tel:03-9000-0000" class="text-red-500 font-bold">03-9000-0000</a></p>
+                    <p>Email: <a href="mailto:quotes@razielinsulation.com.au" class="text-red-500 font-bold">quotes@razielinsulation.com.au</a></p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    
+    <!-- Instant Quote Modal -->
+    <div id="instantQuoteModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-70 flex items-center justify-center p-4">
+        
+        <!-- Modal Content -->
+        <div class="bg-slate-800 p-8 rounded-lg shadow-2xl max-w-lg w-full relative">
+            
+            <!-- Close Button -->
+            <button id="closeQuoteModal" class="absolute top-4 right-4 text-slate-400 hover:text-white text-3xl">&times;</button>
+            
+            <h2 class="text-3xl font-bold text-white mb-6 text-center">Get an Instant Quote for Your Job</h2>
+            <p class="text-slate-400 text-center mb-6">Fill in the details below for a preliminary estimate. We'll contact you to confirm.</p>
+            
+            <form>
+                <div class="mb-4">
+                    <label for="job-type" class="block text-slate-300 mb-2">Type of Insulation</label>
+                    <select id="job-type" class="w-full bg-slate-700 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <option>Ceiling & Roof</option>
+                        <option>Wall Insulation</option>
+                        <option>Floor Insulation</option>
+                        <option>Not Sure</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="area-size" class="block text-slate-300 mb-2">Approximate Area (m²)</label>
+                    <input type="number" id="area-size" placeholder="e.g., 80" class="w-full bg-slate-700 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500">
+                </div>
+                <div class="mb-6">
+                    <label for="quote-email" class="block text-slate-300 mb-2">Your Email</label>
+                    <input type="email" id="quote-email" placeholder="you@example.com" class="w-full bg-slate-700 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500">
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="w-full bg-red-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-red-700 transition duration-300">Get My Instant Quote</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="hero-bg py-6">
+        <div class="container mx-auto px-6 text-center text-slate-400">
+            <p>&copy; 2025 Raziel Insulation Melbourne. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu script
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when a link is clicked
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a'); // Use querySelectorAll to get all links
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // --- Instant Quote Modal Script ---
+        const instantQuoteModal = document.getElementById('instantQuoteModal');
+        const closeQuoteModal = document.getElementById('closeQuoteModal');
+        const openQuoteModalNav = document.getElementById('openQuoteModalNav');
+        const openQuoteModalNavMobile = document.getElementById('openQuoteModalNavMobile');
+
+        // Function to open modal
+        const openModal = (e) => {
+            e.preventDefault();
+            instantQuoteModal.classList.remove('hidden');
+        };
+
+        // Function to close modal
+        const closeModal = () => {
+            instantQuoteModal.classList.add('hidden');
+        };
+
+        // Event Listeners for opening modal
+        openQuoteModalNav.addEventListener('click', openModal);
+        openQuoteModalNavMobile.addEventListener('click', openModal);
+
+        // Event Listener for closing modal
+        closeQuoteModal.addEventListener('click', closeModal);
+
+        // Close modal if overlay (outside content) is clicked
+        instantQuoteModal.addEventListener('click', (e) => {
+            if (e.target === instantQuoteModal) {
+                closeModal();
+            }
+        });
+
+        // Optional: Close modal with ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape" && !instantQuoteModal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+
+        // --- Cleaning Cost Calculator Script ---
+        const areaInput = document.getElementById('cleaning-area-input');
+        const costResult = document.getElementById('cleaning-cost-result');
+        const ratePerSqM = 16;
+
+        areaInput.addEventListener('input', () => {
+            const area = parseFloat(areaInput.value);
+            if (!isNaN(area) && area > 0) {
+                const totalCost = area * ratePerSqM;
+                costResult.textContent = `$${totalCost.toFixed(2)}`;
+            } else {
+                costResult.textContent = '$ 0.00';
+            }
+        });
+
+    </script>
+</body>
+</html>
+
