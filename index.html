@@ -191,9 +191,15 @@
                     
                     <!-- Service 1: Insulation Installation -->
                     <div class="bg-slate-900 rounded-lg p-8 shadow-xl transform hover:-translate-y-2 transition duration-300 group">
-                       <video class="w-full h-auto aspect-video rounded-lg mb-4" controls poster="https://placehold.co/600x340/172a46/cbd5e1?text=Installation+Video&font=inter">
-                           <!-- CORREGIDO: Ruta actualizada para coincidir con el nombre de archivo exacto de la captura de pantalla -->
+                       <!-- MODIFICADO: Se agregaron autoplay, loop, muted, playsinline y se quitó controls -->
+                       <video class="w-full h-auto aspect-video rounded-lg mb-4" 
+                              poster="https://placehold.co/600x340/172a46/cbd5e1?text=Installation+Video&font=inter"
+                              autoplay
+                              loop
+                              muted
+                              playsinline>
                            <source src="videos/Video_De_Instalación_De_Aislamiento (1).mp4" type="video/mp4">
+                           Your browser does not support the video tag.
                        </video>
 
                         <div class="text-red-500 mb-4">
@@ -503,6 +509,4 @@
     </script>
 </body>
 </html>
-
-
 
