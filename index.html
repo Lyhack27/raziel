@@ -172,7 +172,14 @@
         <div class="container mx-auto px-6 py-24 text-center relative z-10">
             <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4">Professional Home Insulation in <span class="text-red-500">Melbourne</span></h1>
             <p class="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-8">Increase comfort, reduce your energy bills, and improve your home's efficiency with our high-quality insulation solutions.</p>
-            <a href="#contact" class="bg-red-600 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-red-700 transition duration-300 transform hover:scale-105">Get a Free Quote</a>
+            
+            <!-- Botones CTA -->
+            <div class="flex flex-col items-center justify-center space-y-4">
+                <a href="#contact" class="bg-red-600 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-red-700 transition duration-300 transform hover:scale-105">Get a Free Quote</a>
+                <!-- NUEVO BOTÓN -->
+                <a href="quote.html" class="bg-white text-red-600 font-bold py-3 px-8 rounded-lg text-lg hover:bg-slate-200 transition duration-300 transform hover:scale-105">Receive an instant service and invoice</a>
+            </div>
+
         </div>
     </header>
 
@@ -600,10 +607,11 @@
         // Esto es un supuesto, ajusta este valor base
         const baseCostPerRValuePerSqM = 10; 
 
+        // LÓGICA DE PLANTAS CORREGIDA
         const floorMultipliers = {
-            '1': 1.0,  // Sin costo extra
-            '2': 1.15, // 15% más caro
-            '3': 1.30  // 30% más caro
+            '1': 1.0,  // Base price
+            '2': 1.25, // 25% more for 2 floors (added difficulty)
+            '3': 1.50  // 50% more for 3 floors (added difficulty)
         };
 
         function calculateInstallationCost() {
