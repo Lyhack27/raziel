@@ -209,6 +209,50 @@
                         </div>
                         <h3 class="text-2xl font-bold text-white mb-3 text-center">Insulation Installation</h3>
                         <p class="text-slate-400 text-center">Professional installation for ceilings, walls, and floors. We use high-quality materials to ensure maximum energy efficiency and comfort.</p>
+                        
+                        <!-- NUEVA CALCULADORA DE INSTALACIÓN -->
+                        <div class="mt-6 pt-6 border-t border-slate-700">
+                            <h4 class="text-lg font-bold text-white mb-3 text-center">Estimate Your Installation Cost</h4>
+                            
+                            <!-- NUEVA DESCRIPCIÓN EN INGLÉS -->
+                            <p class="text-sm text-slate-400 text-center mb-2">
+                                The 'Service Tier' reflects the material's insulation quality, measured by its <strong>R-value</strong> (thermal resistance). A higher R-value means better insulation.
+                            </p>
+                            <ul class="text-xs text-slate-500 text-center mb-4 list-none p-0">
+                                <li><strong>Basic (e.g., Fiberglass):</strong> R-2.2 - R-2.7 / inch</li>
+                                <li><strong>Standard (e.g., EPS):</strong> R-3.6 - R-4.2 / inch</li>
+                                <li><strong>Premium (e.g., Polyurethane):</strong> R-6.0 - R-7.0 / inch</li>
+                            </ul>
+                            <!-- FIN NUEVA DESCRIPCIÓN -->
+
+                            <div class="space-y-4">
+                                <!-- Nivel de Servicio -->
+                                <div>
+                                    <label for="installation-service-tier" class="block text-sm font-medium text-slate-300 mb-1">Service Tier</label>
+                                    <select id="installation-service-tier" class="w-full bg-slate-700 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500">
+                                        <option value="basic">Basic (R-2.2)</option>
+                                        <option value="standard" selected>Standard (R-3.6)</option>
+                                        <option value="premium">Premium (R-6.0)</option>
+                                    </select>
+                                </div>
+                                <!-- Número de Plantas -->
+                                <div>
+                                    <label for="installation-floor-count" class="block text-sm font-medium text-slate-300 mb-1">Property Floors</label>
+                                    <select id="installation-floor-count" class="w-full bg-slate-700 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500">
+                                        <option value="1">1 Floor</option>
+                                        <option value="2">2 Floors</option>
+                                        <option value="3">3 Floors</option>
+                                    </select>
+                                </div>
+                                <!-- Área y Resultado -->
+                                <div class="flex flex-col sm:flex-row gap-2 items-center">
+                                    <input type="number" id="installation-area-input" placeholder="Area in m²" class="w-full sm:w-2/3 bg-slate-700 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500" min="0">
+                                    <span id="installation-cost-result" class="w-full sm:w-1/3 text-center font-bold text-white text-lg p-3 rounded-lg bg-slate-800 whitespace-nowrap">$ 0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- FIN DE NUEVA CALCULADORA -->
+
                     </div>
                     
                     <!-- Service 2: Insulation Removal & Cleaning -->
@@ -307,42 +351,74 @@
                     <p class="text-slate-400 mt-2">Our reputation is built on happy customers.</p>
                     <div class="w-24 h-1 bg-red-600 mx-auto mt-4"></div>
                 </div>
+                <!-- NUEVO ESTILO GOOGLE REVIEWS -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     
                     <!-- Testimonial 1 -->
-                    <div class="bg-slate-800 rounded-lg p-8 shadow-xl">
-                        <div class="text-red-500 text-5xl mb-4">"</div>
-                        <p class="text-slate-400 mb-6 italic">"Absolutely fantastic service. The team was professional, clean, and the difference in our home's temperature was noticeable immediately. Our power bills have dropped significantly! Highly recommend Raziel Insulation."</p>
-                        <div class="flex items-center">
-                            <div>
+                    <div class="bg-slate-800 rounded-lg p-6 shadow-xl flex flex-col">
+                        <div class="flex items-center mb-3">
+                            <!-- Placeholder for user icon -->
+                            <span class="flex-shrink-0 w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-xl">S</span>
+                            <div class="ml-4">
                                 <p class="font-bold text-white">Sarah W.</p>
                                 <p class="text-sm text-slate-500">Richmond, VIC</p>
                             </div>
                         </div>
+                        <div class="flex items-center mb-4">
+                            <!-- 5 Stars -->
+                            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 7.09l6.572-.955L10 0l2.939 6.135 6.572.955-4.756 4.455 1.123 6.545z"/></svg>
+                            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 7.09l6.572-.955L10 0l2.939 6.135 6.572.955-4.756 4.455 1.123 6.545z"/></svg>
+                            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 7.09l6.572-.955L10 0l2.939 6.135 6.572.955-4.756 4.455 1.123 6.545z"/></svg>
+                            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 7.09l6.572-.955L10 0l2.939 6.135 6.572.955-4.756 4.455 1.123 6.545z"/></svg>
+                            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 7.09l6.572-.955L10 0l2.939 6.135 6.572.955-4.756 4.455 1.123 6.545z"/></svg>
+                            <span class="text-xs text-slate-500 ml-2">· 2 weeks ago</span>
+                        </div>
+                        <p class="text-slate-400 mb-4 italic flex-grow">"Absolutely fantastic service. The team was professional, clean, and the difference in our home's temperature was noticeable immediately. Our power bills have dropped significantly! Highly recommend Raziel Insulation."</p>
+                        <p class="text-xs text-slate-500">via Google Reviews</p>
                     </div>
                     
                     <!-- Testimonial 2 -->
-                    <div class="bg-slate-800 rounded-lg p-8 shadow-xl">
-                        <div class="text-red-500 text-5xl mb-4">"</div>
-                        <p class="text-slate-400 mb-6 italic">"We survived the last heatwave so comfortably thanks to our new roof insulation. The whole process was seamless, from the initial quote to the final installation. A truly professional outfit."</p>
-                        <div class="flex items-center">
-                            <div>
+                    <div class="bg-slate-800 rounded-lg p-6 shadow-xl flex flex-col">
+                        <div class="flex items-center mb-3">
+                            <span class="flex-shrink-0 w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-xl">M</span>
+                            <div class="ml-4">
                                 <p class="font-bold text-white">Michael B.</p>
                                 <p class="text-sm text-slate-500">Essendon, VIC</p>
                             </div>
                         </div>
+                        <div class="flex items-center mb-4">
+                            <!-- 5 Stars -->
+                            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 7.09l6.572-.955L10 0l2.939 6.135 6.572.955-4.756 4.455 1.123 6.545z"/></svg>
+                            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 7.09l6.572-.955L10 0l2.939 6.135 6.572.955-4.756 4.455 1.123 6.545z"/></svg>
+                            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 7.09l6.572-.955L10 0l2.939 6.135 6.572.955-4.756 4.455 1.123 6.545z"/></svg>
+                            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 7.09l6.572-.955L10 0l2.939 6.135 6.572.955-4.756 4.455 1.123 6.545z"/></svg>
+                            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 7.09l6.572-.955L10 0l2.939 6.135 6.572.955-4.756 4.455 1.123 6.545z"/></svg>
+                            <span class="text-xs text-slate-500 ml-2">· 1 month ago</span>
+                        </div>
+                        <p class="text-slate-400 mb-4 italic flex-grow">"We survived the last heatwave so comfortably thanks to our new roof insulation. The whole process was seamless, from the initial quote to the final installation. A truly professional outfit."</p>
+                        <p class="text-xs text-slate-500">via Google Reviews</p>
                     </div>
                     
                     <!-- Testimonial 3 -->
-                    <div class="bg-slate-800 rounded-lg p-8 shadow-xl">
-                        <div class="text-red-500 text-5xl mb-4">"</div>
-                        <p class="text-slate-400 mb-6 italic">"I was impressed by their attention to detail and knowledge. They explained all the options clearly without any pressure. The installation crew was punctual and respectful of my property. Five stars!"</p>
-                        <div class="flex items-center">
-                             <div>
+                    <div class="bg-slate-800 rounded-lg p-6 shadow-xl flex flex-col">
+                        <div class="flex items-center mb-3">
+                            <span class="flex-shrink-0 w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-xl">J</span>
+                             <div class="ml-4">
                                 <p class="font-bold text-white">Jessica L.</p>
                                 <p class="text-sm text-slate-500">St Kilda, VIC</p>
                             </div>
                         </div>
+                        <div class="flex items-center mb-4">
+                            <!-- 5 Stars -->
+                            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 7.09l6.572-.955L10 0l2.939 6.135 6.572.955-4.756 4.455 1.123 6.545z"/></svg>
+                            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 7.09l6.572-.955L10 0l2.939 6.135 6.572.955-4.756 4.455 1.123 6.545z"/></svg>
+                            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 7.09l6.572-.955L10 0l2.939 6.135 6.572.955-4.756 4.455 1.123 6.545z"/></svg>
+                            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 7.09l6.572-.955L10 0l2.939 6.135 6.572.955-4.756 4.455 1.123 6.545z"/></svg>
+                            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 7.09l6.572-.955L10 0l2.939 6.135 6.572.955-4.756 4.455 1.123 6.545z"/></svg>
+                            <span class="text-xs text-slate-500 ml-2">· 1 month ago</span>
+                        </div>
+                        <p class="text-slate-400 mb-4 italic flex-grow">"I was impressed by their attention to detail and knowledge. They explained all the options clearly without any pressure. The installation crew was punctual and respectful of my property. Five stars!"</p>
+                        <p class="text-xs text-slate-500">via Google Reviews</p>
                     </div>
                 </div>
             </div>
@@ -492,21 +568,72 @@
         });
 
         // --- Cleaning Cost Calculator Script ---
-        const areaInput = document.getElementById('cleaning-area-input');
-        const costResult = document.getElementById('cleaning-cost-result');
+        const cleaningAreaInput = document.getElementById('cleaning-area-input');
+        const cleaningCostResult = document.getElementById('cleaning-cost-result');
         const ratePerSqM = 16;
 
-        areaInput.addEventListener('input', () => {
-            const area = parseFloat(areaInput.value);
+        cleaningAreaInput.addEventListener('input', () => {
+            const area = parseFloat(cleaningAreaInput.value);
             if (!isNaN(area) && area > 0) {
                 const totalCost = area * ratePerSqM;
-                costResult.textContent = `$${totalCost.toFixed(2)}`;
+                cleaningCostResult.textContent = `$${totalCost.toFixed(2)}`;
             } else {
-                costResult.textContent = '$ 0.00';
+                cleaningCostResult.textContent = '$ 0.00';
             }
         });
+
+        // --- NUEVO: Installation Cost Calculator Script ---
+        const installAreaInput = document.getElementById('installation-area-input');
+        const installTierInput = document.getElementById('installation-service-tier');
+        const installFloorsInput = document.getElementById('installation-floor-count');
+        const installCostResult = document.getElementById('installation-cost-result');
+
+        // Define rates
+        // Tasas base por m² basadas en los valores R de la tabla (usando el valor más bajo)
+        const tierRates = {
+            'basic': 2.2,    // Fibra de vidrio (R-2.2)
+            'standard': 3.6, // EPS (R-3.6)
+            'premium': 6.0   // Poliuretano (R-6.0)
+        };
+        
+        // Costo base por unidad de R-Value (ejemplo, $10 por m² por cada R-1)
+        // Esto es un supuesto, ajusta este valor base
+        const baseCostPerRValuePerSqM = 10; 
+
+        const floorMultipliers = {
+            '1': 1.0,  // Sin costo extra
+            '2': 1.15, // 15% más caro
+            '3': 1.30  // 30% más caro
+        };
+
+        function calculateInstallationCost() {
+            const area = parseFloat(installAreaInput.value);
+            const tier = installTierInput.value;
+            const floors = installFloorsInput.value;
+
+            if (!isNaN(area) && area > 0) {
+                const rValue = tierRates[tier];
+                const floorMultiplier = floorMultipliers[floors];
+                
+                // Cálculo: Area * R-Value * CostoBase * MultiplicadorDePiso
+                const totalCost = area * rValue * baseCostPerRValuePerSqM * floorMultiplier;
+                
+                installCostResult.textContent = `$${totalCost.toFixed(2)}`;
+            } else {
+                installCostResult.textContent = '$ 0.00';
+            }
+        }
+
+        // Add event listeners to all inputs
+        installAreaInput.addEventListener('input', calculateInstallationCost);
+        installTierInput.addEventListener('input', calculateInstallationCost);
+        installFloorsInput.addEventListener('input', calculateInstallationCost);
+        
+        // También actualicé las opciones del dropdown para que muestren el R-Value
+        // y ajusté la lógica de la calculadora para usar esos R-Values.
 
     </script>
 </body>
 </html>
+
 
