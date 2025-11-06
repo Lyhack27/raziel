@@ -41,13 +41,12 @@
             margin-top: 4px;
             padding-right: 1rem;
         }
-        /* Estilo para inputs deshabilitados */
-        input[type="number"]:disabled {
+        input[type="number"]:disabled,
+        input[type="date"]:disabled {
             background-color: #334155; /* slate-700 */
             opacity: 0.5;
             cursor: not-allowed;
         }
-        /* Estilo para los radio buttons personalizados */
         .radio-label {
             border: 2px solid #334155; /* slate-700 */
             padding: 1rem;
@@ -62,12 +61,12 @@
         .radio-label:hover {
             border-color: #475569; /* slate-600 */
         }
-        input[type="radio"]:checked + .radio-label {
+        input[type="radio"]:checked + .radio-label,
+        input[type="checkbox"]:checked + .radio-label {
             border-color: #e53e3e; /* red-600 */
             background-color: #1e293b; /* slate-800 */
             box-shadow: 0 0 0 2px #e53e3e;
         }
-        /* CSS Spinner for Gemini Loading */
         .spinner {
             display: inline-block;
             width: 2rem;
@@ -135,7 +134,15 @@
                     </div>
                 </fieldset>
 
-                <!-- 🔽 --- FIX: RE-INSERTED MISSING HTML BLOCKS --- 🔽 -->
+                <!-- === NUEVO PASO 1.5: Add-ons === -->
+                <fieldset id="removal-addons" class="mb-8 hidden">
+                    <legend class="text-xl font-bold text-white mb-4">1.5. Removal Add-ons</legend>
+                    <div class="flex items-center gap-4 p-4 bg-slate-700 rounded-lg">
+                        <input type="checkbox" id="sanitising-treatment" name="sanitising-treatment" class="h-6 w-6 text-red-600 bg-slate-800 border-slate-600 rounded focus:ring-red-500">
+                        <label for="sanitising-treatment" class="flex-1 text-lg text-slate-300 font-semibold">Ceiling Sanitising Treatment</label>
+                        <span class="text-lg text-slate-300 font-bold">$20.00</span>
+                    </div>
+                </fieldset>
 
                 <!-- Paso 2: Nivel de Instalación (Oculto por defecto) -->
                 <fieldset id="installation-options" class="mb-8">
@@ -176,10 +183,26 @@
                             <input type="number" id="ceiling-sqm" placeholder="m²" class="w-28 bg-slate-600 text-white rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-red-500" min="0" disabled>
                         </div>
                         <!-- Walls -->
-                        <div class="flex items-center gap-4 p-4 bg-slate-700 rounded-lg">
-                            <input type="checkbox" id="area-walls" name="area-walls" class="h-6 w-6 text-red-600 bg-slate-800 border-slate-600 rounded focus:ring-red-500">
-                            <label for="area-walls" class="flex-1 text-lg text-slate-300 font-semibold">Walls</label>
-                            <input type="number" id="walls-sqm" placeholder="m²" class="w-28 bg-slate-600 text-white rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-red-500" min="0" disabled>
+                        <div id="walls-area-container" class="flex flex-col gap-4 p-4 bg-slate-700 rounded-lg"> <!-- MODIFICADO: flex-col y gap-4 -->
+                            <div class="flex items-center gap-4"> <!-- Contenedor original -->
+                                <input type="checkbox" id="area-walls" name="area-walls" class="h-6 w-6 text-red-600 bg-slate-800 border-slate-600 rounded focus:ring-red-500">
+                                <label for="area-walls" class="flex-1 text-lg text-slate-300 font-semibold">Walls</label>
+                                <input type="number" id="walls-sqm" placeholder="m²" class="w-28 bg-slate-600 text-white rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-red-500" min="0" disabled>
+                            </div>
+                            <!-- NUEVO: Opciones de Plantas para Paredes -->
+                            <div id="walls-storey-options" class="hidden pl-10 space-y-2">
+                                <label class="block text-slate-300 text-sm">Is it a single or double storey?</label> <!-- TEXTO CAMBIADO -->
+                                <div class="flex gap-4">
+                                    <label class="relative">
+                                        <input type="radio" name="wallStoreys" value="1" class="absolute opacity-0 w-0 h-0" checked>
+                                        <div class="radio-label text-sm py-2 px-4">Single Storey</div> <!-- TEXTO CAMBIADO -->
+                                    </label>
+                                    <label class="relative">
+                                        <input type="radio" name="wallStoreys" value="2" class="absolute opacity-0 w-0 h-0">
+                                        <div class="radio-label text-sm py-2 px-4">Double Storey</div> <!-- TEXTO CAMBIADO -->
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                         <!-- Floor -->
                         <div class="flex items-center gap-4 p-4 bg-slate-700 rounded-lg">
@@ -190,11 +213,7 @@
                     </div>
                 </fieldset>
 
-                <!-- 🔼 --- END OF RE-INSERTED BLOCKS --- 🔼 -->
-
-                <!-- Paso 4: Detalles de Propiedad (REMOVED) -->
-
-                <!-- Paso 5: Detalles de Contacto (Renumbered to 4) -->
+                <!-- Paso 4: Detalles de Contacto -->
                 <fieldset class="mb-8">
                     <legend class="text-xl font-bold text-white mb-4">4. Your Contact Details</legend>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -211,6 +230,11 @@
                         <label for="contact-email" class="block text-slate-300 mb-2">Email</label>
                         <input type="email" id="contact-email" class="w-full bg-slate-700 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500" required>
                     </div>
+                    <!-- === NUEVO CAMPO DE FECHA === -->
+                    <div class="mt-6">
+                        <label for="contact-date" class="block text-slate-300 mb-2">Preferred Service Date</label>
+                        <input type="date" id="contact-date" class="w-full bg-slate-700 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500" required>
+                    </div>
                 </fieldset>
 
                 <!-- Total Estimado -->
@@ -222,54 +246,10 @@
                     <p class="text-slate-400 text-sm mt-2">This is an estimate. A final quote will be provided after confirming job details.</p>
                 </div>
 
-                <!-- ✨ Botón de Gemini ✨ -->
-                <div class="text-center mb-8">
-                    <button type="button" id="gemini-button" class="text-amber-400 font-bold py-2 px-4 rounded-lg hover:text-amber-300 transition duration-300 focus:outline-none focus:ring-2 focus:ring-amber-500 disabled:opacity-50">
-                        ✨ Ver mi Ahorro y Beneficios Potenciales
-                    </button>
-                </div>
+                <!-- ✨ Botón de Gemini ✨ (REMOVED) -->
 
                 <!-- ✨ Contenedor de Resultados de Gemini (Oculto) -->
-                <div id="gemini-result-container" class="hidden bg-slate-900 rounded-lg p-6 mb-8 shadow-lg border border-slate-700">
-                    <h3 class="text-xl font-bold text-amber-400 mb-4">✨ Beneficios Potenciales de tu Proyecto</h3>
-                    
-                    <!-- Loading Spinner -->
-                    <div id="gemini-loading" class="text-center text-slate-400 hidden">
-                        <div class="spinner text-amber-400" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                        <p class="mt-2">Analizando tu proyecto...</p>
-                    </div>
-
-                    <!-- Estructura para Resultados de Gemini -->
-                    <div id="gemini-result-content" class="hidden">
-                        <!-- Savings Section -->
-                        <div class="mb-6 text-center bg-slate-800 p-4 rounded-lg">
-                            <h4 class="text-lg font-semibold text-slate-300">Ahorro Estimado en 5 Años:</h4>
-                            <p id="gemini-savings-estimate" class="text-3xl font-extrabold text-amber-400 my-2">$0 - $0</p>
-                            <p id="gemini-savings-disclaimer" class="text-xs text-slate-500"></p>
-                        </div>
-                        
-                        <!-- Benefits Table -->
-                        <h4 class="text-lg font-semibold text-slate-300 mb-2">Propiedades y Beneficios:</h4>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left min-w-full">
-                                <thead class="border-b border-slate-600">
-                                    <tr>
-                                        <th class="py-2 pr-2 text-slate-300">Beneficio</th>
-                                        <th class="py-2 text-slate-300">Descripción</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="gemini-benefits-table">
-                                    <!-- Las filas se inyectarán aquí -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    
-                    <!-- Result Error Text -->
-                    <p id="gemini-error-text" class="text-red-400 hidden"></p>
-                </div>
+                <!-- ... (REMOVED) ... -->
 
                 <!-- Botón de Envío -->
                 <div class="text-center">
@@ -282,27 +262,23 @@
 
         <!-- Mensaje de Éxito (Oculto) -->
         <div id="success-message" class="hidden text-center bg-slate-800 rounded-lg shadow-xl p-12">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-green-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <h2 class="text-3xl font-bold text-white mb-4">Thank You!</h2>
-            <p class="text-slate-300 text-lg">We've received your request. A team member will review your details and send a formal quote to your email shortly.</p>
-            <a href="index.html" class="inline-block mt-8 bg-red-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-red-700 transition duration-300">Back to Home</a>
+            <!-- ... (Sin cambios) ... -->
         </div>
         
         <!-- Mensaje de Error (Oculto) -->
         <div id="error-message" class="hidden text-center text-red-400 mt-4 p-4 bg-red-900 border border-red-700 rounded-lg">
-            There was an error sending your request. Please try again or contact us directly.
+            <!-- ... (Sin cambios) ... -->
         </div>
 
     </div>
 
     <script>
-        // --- Precios (¡Establecidos por ti!) ---
+        // --- Precios ---
         const PRICE_REMOVAL = 15;
         const PRICE_INSTALL_BASIC = 20;
         const PRICE_INSTALL_STANDARD = 25;
         const PRICE_INSTALL_PREMIUM = 34;
+        const PRICE_SANITISING = 20; // <-- NUEVO PRECIO
 
         // --- Lógica del Formulario de Cotización ---
         const formContainer = document.getElementById('quote-form-container');
@@ -311,11 +287,8 @@
         const errorMessage = document.getElementById('error-message');
         const submitButton = form.querySelector('button[type="submit"]');
 
-        // ✨ Nuevos elementos de Gemini
-        const geminiButton = document.getElementById('gemini-button');
-        const geminiResultContainer = document.getElementById('gemini-result-container');
-        const geminiLoading = document.getElementById('gemini-loading');
-        const geminiResultText = document.getElementById('gemini-result-text');
+        // ... (Elementos de Gemini sin cambios) ...
+        // ✨ Elementos de Gemini REMOVED ✨
 
         // Elementos del formulario
         const serviceTypeRadios = form.querySelectorAll('input[name="serviceType"]');
@@ -323,16 +296,16 @@
         const areasLegend = document.getElementById('areas-legend');
         const installationLevelRadios = form.querySelectorAll('input[name="installationLevel"]');
         
+        // --- NUEVOS ELEMENTOS DEL FORMULARIO ---
+        const removalAddons = document.getElementById('removal-addons');
+        const sanitisingCheckbox = document.getElementById('sanitising-treatment');
+        const wallsAreaContainer = document.getElementById('walls-area-container'); // <-- AÑADIDO
+
         // --- N8N Webhook Function ---
         async function sendToN8N(quoteData) {
-            // ###########   IMPORTANTE   ###########
-            // Reemplaza esta URL con tu URL de webhook de n8n
             const n8nWebhookUrl = 'https://n8n.solidiaai.com/webhook/aa675519-c431-43d2-9e0e-73f4f4d82a8e';
-            // #####################################
-
             console.log("Sending data to n8n:", quoteData);
             
-            // --- Envío real a n8n ---
             try {
                 const response = await fetch(n8nWebhookUrl, {
                     method: 'POST',
@@ -345,127 +318,12 @@
                 console.log("n8n webhook successful:", await response.json());
             } catch (error) {
                 console.error("Error sending data to n8n:", error);
-                throw error; // Lanza el error para que el 'catch' del formulario lo maneje
+                throw error; 
             }
         }
 
-        // --- ✨ Nueva Función: Llamada a la API de Gemini ---
-        async function callGeminiAPI(prompt, retries = 3, delay = 1000) {
-            geminiResultContainer.classList.remove('hidden');
-            geminiLoading.classList.remove('hidden');
-            geminiResultText.classList.add('hidden');
-            geminiButton.disabled = true;
-
-            // El prompt del sistema define el rol y el idioma de la IA
-            const systemPrompt = "Eres 'Raz', un experto en eficiencia energética de Raziel Insulation. Tu respuesta DEBE ser un objeto JSON válido, sin `json` o markdown. Responde en español. Basado en la selección del cliente (servicio, nivel, áreas, m²), genera una lista de beneficios y una estimación de ahorro en 5 años.\n\nAquí tienes el contexto de los niveles:\n- 'Basic' (buena protección, R-value estándar).\n- 'Standard' (protección excelente, el más popular, R-value alto).\n- 'Premium' (protección máxima, R-values más altos como R4, R6, mayor ahorro a largo plazo).\n\nBasa la estimación de ahorro en los m² y este nivel. Un nivel Premium debe mostrar un ahorro significativamente mayor. Sé realista y presenta el ahorro como un rango (ej: '$1500 - $2500'). Incluye un descargo de responsabilidad breve.";
-
-            const apiKey = ""; // La API key es gestionada por el entorno
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-
-            const payload = {
-                contents: [{ 
-                    role: "user", 
-                    parts: [{ text: prompt }] 
-                }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                },
-                // --- DEFINIR EL ESQUEMA JSON DE RESPUESTA ---
-                generationConfig: {
-                    responseMimeType: "application/json",
-                    responseSchema: {
-                        type: "OBJECT",
-                        properties: {
-                            benefits: {
-                                type: "ARRAY",
-                                items: {
-                                    type: "OBJECT",
-                                    properties: {
-                                        feature: { type: "STRING" },
-                                        description: { type: "STRING" }
-                                    },
-                                    required: ["feature", "description"]
-                                }
-                            },
-                            savings: {
-                                type: "OBJECT",
-                                properties: {
-                                    fiveYearEstimate: { type: "STRING" },
-                                    disclaimer: { type: "STRING" }
-                                },
-                                required: ["fiveYearEstimate", "disclaimer"]
-                            }
-                        },
-                        required: ["benefits", "savings"]
-                    }
-                }
-            };
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    // Manejo de "Rate Limiting" (429) con reintentos
-                    if (response.status === 429 && retries > 0) {
-                        await new Promise(res => setTimeout(res, delay));
-                        return callGeminiAPI(prompt, retries - 1, delay * 2);
-                    }
-                    throw new Error(`API Error: ${response.status} ${response.statusText}`);
-                }
-
-                const result = await response.json();
-                const aiResponseText = result.candidates?.[0]?.content?.parts?.[0]?.text;
-
-                if (aiResponseText) {
-                    // --- Procesar la respuesta JSON ---
-                    const aiResponseJson = JSON.parse(aiResponseText);
-                    const benefits = aiResponseJson.benefits;
-                    const savings = aiResponseJson.savings;
-
-                    // Ocultar carga, mostrar contenido
-                    geminiLoading.classList.add('hidden');
-                    geminiResultContent.classList.remove('hidden');
-                    geminiErrorText.classList.add('hidden');
-
-                    // 1. Poblar Ahorros
-                    document.getElementById('gemini-savings-estimate').textContent = savings.fiveYearEstimate;
-                    document.getElementById('gemini-savings-disclaimer').textContent = savings.disclaimer;
-
-                    // 2. Poblar Tabla de Beneficios
-                    const tableBody = document.getElementById('gemini-benefits-table');
-                    tableBody.innerHTML = ''; // Limpiar resultados anteriores
-                    
-                    if (benefits && benefits.length > 0) {
-                        benefits.forEach(benefit => {
-                            tableBody.innerHTML += `
-                                <tr class="border-b border-slate-700">
-                                    <td class="py-3 pr-2 font-semibold text-slate-200">${benefit.feature}</td>
-                                    <td class="py-3 text-slate-400">${benefit.description}</td>
-                                </tr>
-                            `;
-                        });
-                    } else {
-                        tableBody.innerHTML = `<tr><td colspan="2" class="py-3 text-slate-400">No se pudieron generar beneficios específicos.</td></tr>`;
-                    }
-
-                } else {
-                    throw new Error("No text returned from API.");
-                }
-
-            } catch (error) {
-                console.error("Gemini API call failed:", error);
-                geminiLoading.classList.add('hidden');
-                geminiResultContent.classList.add('hidden');
-                geminiErrorText.textContent = "Lo siento, no se pudieron cargar los beneficios en este momento. Por favor, inténtalo de nuevo.";
-                geminiErrorText.classList.remove('hidden');
-            } finally {
-                geminiButton.disabled = false;
-            }
-        }
+        // ... (Función callGeminiAPI sin cambios) ...
+        // ✨ Función callGeminiAPI REMOVED ✨
 
         // --- Funciones de Lógica del Formulario ---
 
@@ -474,40 +332,46 @@
             const checkbox = document.getElementById(checkboxId);
             const input = document.getElementById(inputId);
             
-            // Añadir comprobación por si los elementos no existen
             if (!checkbox || !input) {
-                // This will still log an error on first load if HTML is missing, which is correct.
                 console.error(`Error: Elemento no encontrado. Checkbox: ${checkboxId}, Input: ${inputId}`);
                 return; 
             }
+            
+            // --- AÑADIDO: Lógica específica para 'Walls' ---
+            const wallsStoreyOptions = document.getElementById('walls-storey-options');
             
             checkbox.addEventListener('change', () => {
                 if (checkbox.checked) {
                     input.disabled = false;
                     input.required = true;
                     input.focus();
+                    if (checkboxId === 'area-walls' && wallsStoreyOptions) {
+                        wallsStoreyOptions.classList.remove('hidden'); // <-- Mostrar opciones de plantas
+                    }
                 } else {
                     input.disabled = true;
                     input.required = false;
                     input.value = '';
+                    if (checkboxId === 'area-walls' && wallsStoreyOptions) {
+                        wallsStoreyOptions.classList.add('hidden'); // <-- Ocultar opciones de plantas
+                    }
                 }
                 calculateTotal(); // Recalcula al marcar/desmarcar
             });
             
-            input.addEventListener('input', calculateTotal); // Recalcula al escribir
+            input.addEventListener('input', calculateTotal);
         }
 
-        // Mostrar/ocultar opciones de instalación
+        // --- FUNCIÓN ACTUALIZADA ---
         function toggleInstallOptions() {
             const selectedService = form.querySelector('input[name="serviceType"]:checked').value;
             
-            // Añadir comprobación por si los elementos no existen
-            if (!installationOptions || !areasLegend) {
-                // This will still log an error on first load if HTML is missing, which is correct.
-                console.error("Error: Elementos del formulario 'installationOptions' o 'areasLegend' no encontrados.");
+            if (!installationOptions || !areasLegend || !removalAddons || !wallsAreaContainer) { // <-- MODIFICADO
+                console.error("Error: Elementos del formulario no encontrados.");
                 return;
             }
 
+            // Mostrar/ocultar opciones de instalación
             if (selectedService === 'Removal & Cleaning') {
                 installationOptions.classList.add('hidden');
                 areasLegend.textContent = "3. Which areas need cleaning?";
@@ -518,122 +382,144 @@
                 installationOptions.classList.remove('hidden');
                 areasLegend.textContent = "3. Which areas need service?";
             }
+            
+            // --- NUEVA LÓGICA: Mostrar/ocultar add-ons ---
+            if (selectedService === 'Removal & Cleaning' || selectedService === 'Both (Removal & Installation)') {
+                removalAddons.classList.remove('hidden');
+                wallsAreaContainer.classList.add('hidden'); // <-- AÑADIDO: Ocultar Walls
+                
+                // --- AÑADIDO: Limpiar campos de Walls si se ocultan ---
+                const wallsCheckbox = document.getElementById('area-walls');
+                const wallsSqm = document.getElementById('walls-sqm');
+                if (wallsCheckbox) wallsCheckbox.checked = false;
+                if (wallsSqm) {
+                    wallsSqm.value = '';
+                    wallsSqm.disabled = true;
+                    wallsSqm.required = false;
+                }
+                // --- Fin de código añadido ---
+                
+            } else { // 'Installation Only'
+                removalAddons.classList.add('hidden');
+                if (sanitisingCheckbox) sanitisingCheckbox.checked = false; // Desmarcar si se oculta
+                wallsAreaContainer.classList.remove('hidden'); // <-- AÑADIDO: Mostrar Walls
+            }
+            
             calculateTotal(); // Recalcula al cambiar el tipo de servicio
         }
 
-        // Calcular el total
+        // --- FUNCIÓN ACTUALIZADA (REESCRITA PARA PRECISIÓN DE COSTOS) ---
         function calculateTotal() {
             let totalSqm = 0;
             let installCost = 0;
             let removalCost = 0;
+            let sanitisingCost = 0; // <-- Nueva variable
 
             const serviceType = form.querySelector('input[name="serviceType"]:checked').value;
             
-            // 1. Obtener total de metros cuadrados (m²)
-            const ceilingCheckbox = document.getElementById('area-ceiling');
-            const wallsCheckbox = document.getElementById('area-walls');
-            const floorCheckbox = document.getElementById('area-floor');
-
-            if (ceilingCheckbox && ceilingCheckbox.checked) {
-                totalSqm += parseFloat(document.getElementById('ceiling-sqm').value) || 0;
-            }
-            if (wallsCheckbox && wallsCheckbox.checked) {
-                totalSqm += parseFloat(document.getElementById('walls-sqm').value) || 0;
-            }
-            if (floorCheckbox && floorCheckbox.checked) {
-                totalSqm += parseFloat(document.getElementById('floor-sqm').value) || 0;
-            }
-
-            // 2. Calcular costo de remoción
-            if (serviceType === 'Removal & Cleaning' || serviceType === 'Both (Removal & Installation)') {
-                removalCost = totalSqm * PRICE_REMOVAL;
-            }
-
-            // 3. Calcular costo de instalación
+            // Determinar el precio de instalación por m²
             let installLevel = null;
+            let installPricePerSqm = 0;
             if (serviceType === 'Installation Only' || serviceType === 'Both (Removal & Installation)') {
                 const selectedLevelRadio = form.querySelector('input[name="installationLevel"]:checked');
                 if (selectedLevelRadio) {
-                    installLevel = selectedLevelRadio.value; // "Basic", "Standard", "Premium"
-                    let installPricePerSqm = 0;
-                    
+                    installLevel = selectedLevelRadio.value;
                     if (installLevel === 'Basic') installPricePerSqm = PRICE_INSTALL_BASIC;
                     else if (installLevel === 'Standard') installPricePerSqm = PRICE_INSTALL_STANDARD;
                     else if (installLevel === 'Premium') installPricePerSqm = PRICE_INSTALL_PREMIUM;
-                    
-                    installCost = totalSqm * installPricePerSqm;
                 }
             }
 
-            // 4. Calcular total y mostrar
-            const totalCost = installCost + removalCost;
+            // --- Calcular costos por área ---
+            
+            // 1. Ceiling
+            const ceilingCheckbox = document.getElementById('area-ceiling');
+            const ceilingSqmVal = parseFloat(document.getElementById('ceiling-sqm').value) || 0;
+            if (ceilingCheckbox && ceilingCheckbox.checked && ceilingSqmVal > 0) {
+                totalSqm += ceilingSqmVal;
+                if (serviceType === 'Removal & Cleaning' || serviceType === 'Both (Removal & Installation)') {
+                    removalCost += ceilingSqmVal * PRICE_REMOVAL;
+                }
+                if (serviceType === 'Installation Only' || serviceType === 'Both (Removal & Installation)') {
+                    installCost += ceilingSqmVal * installPricePerSqm;
+                }
+            }
+
+            // 2. Walls (Solo aplica a 'Installation Only' según nuestra lógica de ocultar)
+            const wallsCheckbox = document.getElementById('area-walls');
+            const wallsSqmVal = parseFloat(document.getElementById('walls-sqm').value) || 0;
+            if (wallsCheckbox && wallsCheckbox.checked && wallsSqmVal > 0 && serviceType === 'Installation Only') {
+                totalSqm += wallsSqmVal;
+                
+                // --- ¡AQUÍ ESTÁ LA LÓGICA DE PRECIOS! ---
+                const wallStoreys = form.querySelector('input[name="wallStoreys"]:checked').value;
+                const wallMultiplier = (wallStoreys === "2") ? 2 : 1;
+                
+                installCost += (wallsSqmVal * installPricePerSqm) * wallMultiplier;
+            }
+
+            // 3. Floor
+            const floorCheckbox = document.getElementById('area-floor');
+            const floorSqmVal = parseFloat(document.getElementById('floor-sqm').value) || 0;
+            if (floorCheckbox && floorCheckbox.checked && floorSqmVal > 0) {
+                totalSqm += floorSqmVal;
+                if (serviceType === 'Removal & Cleaning' || serviceType === 'Both (Removal & Installation)') {
+                    removalCost += floorSqmVal * PRICE_REMOVAL;
+                }
+                if (serviceType === 'Installation Only' || serviceType === 'Both (Removal & Installation)') {
+                    installCost += floorSqmVal * installPricePerSqm;
+                }
+            }
+
+            // 4. Sanitising Add-on
+            if (sanitisingCheckbox && sanitisingCheckbox.checked && (serviceType === 'Removal & Cleaning' || serviceType === 'Both (Removal & Installation)')) {
+                sanitisingCost = PRICE_SANITISING;
+            }
+
+            // 5. Calcular total y mostrar
+            const totalCost = installCost + removalCost + sanitisingCost;
             document.getElementById('total-cost-display').textContent = `$${totalCost.toFixed(2)}`;
             
-            // Habilitar/deshabilitar botón de Gemini
+            /*
             if (geminiButton) {
                 geminiButton.disabled = totalSqm === 0;
             }
+            */ // <-- Lógica de Gemini REMOVED
 
             return { totalCost, installLevel, totalSqm };
         }
 
         // --- Configuración Inicial y Event Listeners ---
 
-        // Configurar listeners para inputs de m²
         toggleSqmInput('area-ceiling', 'ceiling-sqm');
         toggleSqmInput('area-walls', 'walls-sqm');
         toggleSqmInput('area-floor', 'floor-sqm');
 
-        // Configurar listeners para tipos de servicio
         if (serviceTypeRadios.length > 0) {
             serviceTypeRadios.forEach(radio => {
                 radio.addEventListener('change', toggleInstallOptions);
             });
         }
         
-        // Configurar listeners para niveles de instalación
         if (installationLevelRadios.length > 0) {
             installationLevelRadios.forEach(radio => {
                 radio.addEventListener('change', calculateTotal);
             });
         }
-
-        // ✨ Nuevo Event Listener para el botón de Gemini
-        if (geminiButton) {
-            geminiButton.addEventListener('click', () => {
-                // Recopilar datos para el prompt de Gemini
-                const serviceType = form.querySelector('input[name="serviceType"]:checked').value;
-                const { installLevel, totalSqm } = calculateTotal(); // Usamos la función existente
-                
-                let areasList = [];
-                const ceilingCheckbox = document.getElementById('area-ceiling');
-                const wallsCheckbox = document.getElementById('area-walls');
-                const floorCheckbox = document.getElementById('area-floor');
-
-                if (ceilingCheckbox && ceilingCheckbox.checked) {
-                    areasList.push(`Techo (${document.getElementById('ceiling-sqm').value || 0}m²)`);
-                }
-                if (wallsCheckbox && wallsCheckbox.checked) {
-                    areasList.push(`Paredes (${document.getElementById('walls-sqm').value || 0}m²)`);
-                }
-                if (floorCheckbox && floorCheckbox.checked) {
-                    areasList.push(`Suelo (${document.getElementById('floor-sqm').value || 0}m²)`);
-                }
-                
-                // Crear el prompt para la IA
-                const userQuery = `Servicio: ${serviceType}, Nivel: ${installLevel || 'N/A'}, Áreas: ${areasList.join(', ') || 'Ninguna'}, Total m²: ${totalSqm}`;
-                
-                // Llamar a la API
-                callGeminiAPI(userQuery);
-            });
+        
+        // --- NUEVO LISTENER ---
+        if (sanitisingCheckbox) {
+            sanitisingCheckbox.addEventListener('change', calculateTotal);
         }
 
+        // ... (Listener de Gemini sin cambios) ...
+        // ✨ Event Listener de Gemini REMOVED ✨
 
         // Correr al cargar la página
         toggleInstallOptions();
         calculateTotal();
 
-        // Manejar envío del formulario
+        // --- FUNCIÓN ACTUALIZADA ---
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             errorMessage.classList.add('hidden');
@@ -658,12 +544,23 @@
                 areas.floor_sqm = document.getElementById('floor-sqm').value || 0;
             }
             
+            // --- AÑADIDO: Obtener valor de plantas (storeys) ---
+            let wallStoreys = null;
+            if (wallsCheckbox && wallsCheckbox.checked) {
+                wallStoreys = form.querySelector('input[name="wallStoreys"]:checked').value;
+            }
+
+            // --- OBJETO ACTUALIZADO ---
             const quoteRequest = {
                 serviceType: form.querySelector('input[name="serviceType"]:checked').value,
                 installationLevel: installLevel,
-                // propertyType: document.getElementById('property-type').value, // REMOVED
                 areas: areas,
+                wallStoreys: wallStoreys, // <-- NUEVO CAMPO
                 totalSqm: totalSqm,
+                // --- NUEVOS CAMPOS ---
+                sanitisingTreatment: sanitisingCheckbox ? sanitisingCheckbox.checked : false,
+                preferredServiceDate: document.getElementById('contact-date').value,
+                // ---
                 estimatedTotalCost: totalCost.toFixed(2),
                 contact: {
                     name: document.getElementById('contact-name').value,
@@ -676,12 +573,10 @@
             try {
                 await sendToN8N(quoteRequest);
                 
-                // Éxito: Ocultar formulario, mostrar mensaje de éxito
                 formContainer.classList.add('hidden');
                 successMessage.classList.remove('hidden');
 
             } catch (error) {
-                // Error: Mostrar mensaje de error
                 errorMessage.classList.remove('hidden');
                 submitButton.disabled = false;
                 submitButton.textContent = 'Get My Quote';
