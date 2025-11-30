@@ -734,63 +734,38 @@
             const formContainer = document.getElementById('quote-form-container');
             const form = document.getElementById('quote-form');
             const successMessage = document.getElementById('success-message');
-            const errorMessage = document.getElementById('error-message');
-            const submitButton = form.querySelector('button[type="submit"]');
 
-            const serviceTypeRadios = document.querySelectorAll('input[name="serviceType"]');
-            const installationLevelRadios = document.querySelectorAll('input[name="installationLevel"]');
-            const sanitisingCheckbox = document.getElementById('sanitising-treatment');
+            if (!checkbox || !input) return;
 
-                });
+            const wallsStoreyOptions = document.getElementById('walls-storey-options');
 
-            if (!response.ok) {
-                throw new Error(`Server returned status ${response.status}`);
-            }
-
-            // Try to parse JSON if possible, but don't fail if it's just text
-            const text = await response.text();
-            try {
-                return JSON.parse(text);
-            } catch (e) {
-                return text;
-            }
-            }
-
-            function toggleSqmInput(checkboxId, inputId) {
-                const checkbox = document.getElementById(checkboxId);
-                const input = document.getElementById(inputId);
-
-                if (!checkbox || !input) return;
-
-                const wallsStoreyOptions = document.getElementById('walls-storey-options');
-
-                const updateState = () => {
-                    if (checkbox.checked) {
-                        input.disabled = false;
-                        input.required = true;
-                        if (checkboxId === 'area-walls' && wallsStoreyOptions) {
-                            wallsStoreyOptions.classList.remove('hidden');
-                        }
-                    } else {
-                        input.disabled = true;
-                        input.required = false;
-                        input.value = '';
-                        if (checkboxId === 'area-walls' && wallsStoreyOptions) {
-                            wallsStoreyOptions.classList.add('hidden');
-                        }
+            const updateState = () => {
+                if (checkbox.checked) {
+                    input.disabled = false;
+                    input.required = true;
+                    if (checkboxId === 'area-walls' && wallsStoreyOptions) {
+                        wallsStoreyOptions.classList.remove('hidden');
                     }
-                    calculateTotal();
-                };
+                } else {
+                    input.disabled = true;
+                    input.required = false;
+                    input.value = '';
+                    if (checkboxId === 'area-walls' && wallsStoreyOptions) {
+                        wallsStoreyOptions.classList.add('hidden');
+                    }
+                }
+                calculateTotal();
+            };
 
-                checkbox.addEventListener('change', () => {
-                    updateState();
-                    if (checkbox.checked) input.focus();
-                });
-
-                input.addEventListener('input', calculateTotal);
-
-                // Initialize state
+            checkbox.addEventListener('change', () => {
                 updateState();
+                if (checkbox.checked) input.focus();
+            });
+
+            input.addEventListener('input', calculateTotal);
+
+            // Initialize state
+            updateState();
             }
 
             function toggleInstallOptions() {
