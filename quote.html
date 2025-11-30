@@ -351,65 +351,6 @@
         // ✨ Elementos de Gemini REMOVED ✨
 
         // Elementos del formulario
-        const serviceTypeRadios = form.querySelectorAll('input[name="serviceType"]');
-        const installationOptions = document.getElementById('installation-options');
-        const areasLegend = document.getElementById('areas-legend');
-        const installationLevelRadios = form.querySelectorAll('input[name="installationLevel"]');
-
-        // --- FormSubmit Function (Sends to Gmail) ---
-        async function sendToGmail(quoteData) {
-            // Using FormSubmit to send email to razielinsulation@gmail.com
-            // NOTE: The first time you submit this form, you will receive an email 
-            // from FormSubmit asking to confirm your email address.
-            const endpoint = 'https://formsubmit.co/ajax/razielinsulation@gmail.com';
-
-            console.log("Sending data to Gmail via FormSubmit:", quoteData);
-
-            // Flatten data for better email formatting
-            const emailData = {
-                _subject: `New Quote Request from ${quoteData.contact.name}`,
-                _captcha: "false",
-                _template: "table",
-                "Service Type": quoteData.serviceType,
-                "Installation Level": quoteData.installationLevel || "N/A",
-                "Total Sqm": quoteData.totalSqm,
-                "Estimated Cost": `$${quoteData.estimatedTotalCost}`,
-                "Preferred Date": quoteData.preferredServiceDate,
-                "Wall Storeys": quoteData.wallStoreys || "N/A",
-                "Sanitising Treatment": quoteData.sanitisingTreatment ? "Yes" : "No",
-                "--- Contact Details ---": "",
-                "Name": quoteData.contact.name,
-                "Phone": quoteData.contact.phone,
-                "Email": quoteData.contact.email,
-                "--- Areas ---": "",
-                "Ceiling (sqm)": quoteData.areas.ceiling_sqm || 0,
-                "Walls (sqm)": quoteData.areas.walls_sqm || 0,
-                "Floor (sqm)": quoteData.areas.floor_sqm || 0
-            };
-
-            try {
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(emailData)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`FormSubmit returned status ${response.status}`);
-                }
-                console.log("FormSubmit successful:", await response.json());
-            } catch (error) {
-                console.error("Error sending data to Gmail:", error);
-                throw error;
-            }
-        }
-
-        // --- Funciones de Lógica del Formulario ---
-
-        // Habilitar/deshabilitar inputs de m²
         function toggleSqmInput(checkboxId, inputId) {
             const checkbox = document.getElementById(checkboxId);
             const input = document.getElementById(inputId);
@@ -641,6 +582,201 @@
                 totalSqm: totalSqm,
                 // --- NUEVOS CAMPOS ---
                 sanitisingTreatment: sanitisingCheckbox ? sanitisingCheckbox.checked : false,
+                const selectedService = form.querySelector('input[name="serviceType"]:checked').value;
+
+                if(!installationOptions || !areasLegend || !removalAddons || !wallsAreaContainer) { // <-- MODIFICADO
+            console.error("Error: Elementos del formulario no encontrados.");
+            return;
+        }
+
+        // Mostrar/ocultar opciones de instalación
+        if (selectedService === 'Removal & Cleaning') {
+            installationOptions.classList.add('hidden');
+            areasLegend.textContent = "3. Which areas need cleaning?";
+        } else if (selectedService === 'Installation Only') {
+            installationOptions.classList.remove('hidden');
+            areasLegend.textContent = "3. Which areas need installation?";
+        } else { // Both
+            installationOptions.classList.remove('hidden');
+            areasLegend.textContent = "3. Which areas need service?";
+        }
+
+        // --- NUEVA LÓGICA: Mostrar/ocultar add-ons ---
+        if (selectedService === 'Removal & Cleaning' || selectedService === 'Both (Removal & Installation)') {
+            removalAddons.classList.remove('hidden');
+            wallsAreaContainer.classList.add('hidden'); // <-- AÑADIDO: Ocultar Walls
+
+            // --- AÑADIDO: Limpiar campos de Walls si se ocultan ---
+            const wallsCheckbox = document.getElementById('area-walls');
+            const wallsSqm = document.getElementById('walls-sqm');
+            if (wallsCheckbox) wallsCheckbox.checked = false;
+            if (wallsSqm) {
+                wallsSqm.value = '';
+                wallsSqm.disabled = true;
+                wallsSqm.required = false;
+            }
+            // --- Fin de código añadido ---
+
+        } else { // 'Installation Only'
+            removalAddons.classList.add('hidden');
+            if (sanitisingCheckbox) sanitisingCheckbox.checked = false; // Desmarcar si se oculta
+            wallsAreaContainer.classList.remove('hidden'); // <-- AÑADIDO: Mostrar Walls
+        }
+
+        calculateTotal(); // Recalcula al cambiar el tipo de servicio
+        }
+
+        // --- FUNCIÓN ACTUALIZADA (REESCRITA PARA PRECISIÓN DE COSTOS) ---
+        function calculateTotal() {
+            let totalSqm = 0;
+            let installCost = 0;
+            let removalCost = 0;
+            let sanitisingCost = 0; // <-- Nueva variable
+
+            const serviceType = form.querySelector('input[name="serviceType"]:checked').value;
+
+            // Determinar el precio de instalación por m²
+            let installLevel = null;
+            let installPricePerSqm = 0;
+            if (serviceType === 'Installation Only' || serviceType === 'Both (Removal & Installation)') {
+                const selectedLevelRadio = form.querySelector('input[name="installationLevel"]:checked');
+                if (selectedLevelRadio) {
+                    installLevel = selectedLevelRadio.value;
+                    if (installLevel === 'Basic') installPricePerSqm = PRICE_INSTALL_BASIC;
+                    else if (installLevel === 'Standard') installPricePerSqm = PRICE_INSTALL_STANDARD;
+                    else if (installLevel === 'Premium') installPricePerSqm = PRICE_INSTALL_PREMIUM;
+                }
+            }
+
+            // --- Calcular costos por área ---
+
+            // 1. Ceiling
+            const ceilingCheckbox = document.getElementById('area-ceiling');
+            const ceilingSqmVal = parseFloat(document.getElementById('ceiling-sqm').value) || 0;
+            if (ceilingCheckbox && ceilingCheckbox.checked && ceilingSqmVal > 0) {
+                totalSqm += ceilingSqmVal;
+                if (serviceType === 'Removal & Cleaning' || serviceType === 'Both (Removal & Installation)') {
+                    removalCost += ceilingSqmVal * PRICE_REMOVAL;
+                }
+                if (serviceType === 'Installation Only' || serviceType === 'Both (Removal & Installation)') {
+                    installCost += ceilingSqmVal * installPricePerSqm;
+                }
+            }
+
+            // 2. Walls (Solo aplica a 'Installation Only' según nuestra lógica de ocultar)
+            const wallsCheckbox = document.getElementById('area-walls');
+            const wallsSqmVal = parseFloat(document.getElementById('walls-sqm').value) || 0;
+            if (wallsCheckbox && wallsCheckbox.checked && wallsSqmVal > 0 && serviceType === 'Installation Only') {
+                totalSqm += wallsSqmVal;
+
+                // --- ¡AQUÍ ESTÁ LA LÓGICA DE PRECIOS! ---
+                const wallStoreys = form.querySelector('input[name="wallStoreys"]:checked').value;
+                const wallMultiplier = (wallStoreys === "2") ? 2 : 1;
+
+                installCost += (wallsSqmVal * installPricePerSqm) * wallMultiplier;
+            }
+
+            // 3. Floor
+            const floorCheckbox = document.getElementById('area-floor');
+            const floorSqmVal = parseFloat(document.getElementById('floor-sqm').value) || 0;
+            if (floorCheckbox && floorCheckbox.checked && floorSqmVal > 0) {
+                totalSqm += floorSqmVal;
+                if (serviceType === 'Removal & Cleaning' || serviceType === 'Both (Removal & Installation)') {
+                    removalCost += floorSqmVal * PRICE_REMOVAL;
+                }
+                if (serviceType === 'Installation Only' || serviceType === 'Both (Removal & Installation)') {
+                    installCost += floorSqmVal * installPricePerSqm;
+                }
+            }
+
+            // 4. Sanitising Add-on
+            if (sanitisingCheckbox && sanitisingCheckbox.checked && (serviceType === 'Removal & Cleaning' || serviceType === 'Both (Removal & Installation)')) {
+                sanitisingCost = PRICE_SANITISING;
+            }
+
+            // 5. Calcular total y mostrar
+            const totalCost = installCost + removalCost + sanitisingCost;
+            document.getElementById('total-cost-display').textContent = `$${totalCost.toFixed(2)}`;
+
+            /*
+            if (geminiButton) {
+                geminiButton.disabled = totalSqm === 0;
+            }
+            */ // <-- Lógica de Gemini REMOVED
+
+            return { totalCost, installLevel, totalSqm };
+        }
+
+        // --- Configuración Inicial y Event Listeners ---
+
+        toggleSqmInput('area-ceiling', 'ceiling-sqm');
+        toggleSqmInput('area-walls', 'walls-sqm');
+        toggleSqmInput('area-floor', 'floor-sqm');
+
+        if (serviceTypeRadios.length > 0) {
+            serviceTypeRadios.forEach(radio => {
+                radio.addEventListener('change', toggleInstallOptions);
+            });
+        }
+
+        if (installationLevelRadios.length > 0) {
+            installationLevelRadios.forEach(radio => {
+                radio.addEventListener('change', calculateTotal);
+            });
+        }
+
+        // --- NUEVO LISTENER ---
+        if (sanitisingCheckbox) {
+            sanitisingCheckbox.addEventListener('change', calculateTotal);
+        }
+
+        // ... (Listener de Gemini sin cambios) ...
+        // ✨ Event Listener de Gemini REMOVED ✨
+
+        // Correr al cargar la página
+        toggleInstallOptions();
+        calculateTotal();
+
+        // --- FUNCIÓN ACTUALIZADA ---
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errorMessage.classList.add('hidden');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
+
+            // Recopilar datos finales
+            const { totalCost, installLevel, totalSqm } = calculateTotal();
+
+            const areas = {};
+            const ceilingCheckbox = document.getElementById('area-ceiling');
+            const wallsCheckbox = document.getElementById('area-walls');
+            const floorCheckbox = document.getElementById('area-floor');
+
+            if (ceilingCheckbox && ceilingCheckbox.checked) {
+                areas.ceiling_sqm = document.getElementById('ceiling-sqm').value || 0;
+            }
+            if (wallsCheckbox && wallsCheckbox.checked) {
+                areas.walls_sqm = document.getElementById('walls-sqm').value || 0;
+            }
+            if (floorCheckbox && floorCheckbox.checked) {
+                areas.floor_sqm = document.getElementById('floor-sqm').value || 0;
+            }
+
+            // --- AÑADIDO: Obtener valor de plantas (storeys) ---
+            let wallStoreys = null;
+            if (wallsCheckbox && wallsCheckbox.checked) {
+                wallStoreys = form.querySelector('input[name="wallStoreys"]:checked').value;
+            }
+
+            // --- OBJETO ACTUALIZADO ---
+            const quoteRequest = {
+                serviceType: form.querySelector('input[name="serviceType"]:checked').value,
+                installationLevel: installLevel,
+                areas: areas,
+                wallStoreys: wallStoreys, // <-- NUEVO CAMPO
+                totalSqm: totalSqm,
+                // --- NUEVOS CAMPOS ---
+                sanitisingTreatment: sanitisingCheckbox ? sanitisingCheckbox.checked : false,
                 preferredServiceDate: document.getElementById('contact-date').value,
                 // ---
                 estimatedTotalCost: totalCost.toFixed(2),
@@ -651,9 +787,9 @@
                 }
             };
 
-            // Enviar a Gmail
+            // Enviar a n8n
             try {
-                await sendToGmail(quoteRequest);
+                await sendToN8N(quoteRequest);
 
                 formContainer.classList.add('hidden');
                 successMessage.classList.remove('hidden');
