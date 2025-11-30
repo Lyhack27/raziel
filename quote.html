@@ -539,18 +539,6 @@
         const errorMessage = document.getElementById('error-message');
         const submitButton = form.querySelector('button[type="submit"]');
 
-        const serviceTypeRadios = document.querySelectorAll('input[name="serviceType"]');
-        const installationLevelRadios = document.querySelectorAll('input[name="installationLevel"]');
-        const sanitisingCheckbox = document.getElementById('sanitising-treatment');
-
-        const installationOptions = document.getElementById('installation-options');
-        body: JSON.stringify(quoteData)
-            });
-
-        if (!response.ok) {
-            throw new Error(`Server returned status ${response.status}`);
-        }
-
         // Try to parse JSON if possible, but don't fail if it's just text
         const text = await response.text();
         try {
