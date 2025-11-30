@@ -544,32 +544,20 @@
         const sanitisingCheckbox = document.getElementById('sanitising-treatment');
 
         const installationOptions = document.getElementById('installation-options');
-        const areasLegend = document.getElementById('areas-legend');
-        const removalAddons = document.getElementById('removal-addons');
-        const wallsAreaContainer = document.getElementById('walls-area-container');
-
-        // --- N8N Webhook Function ---
-        async function sendToN8N(quoteData) {
-            const n8nWebhookUrl = 'https://n8n.solidiaai.com/webhook/aa675519-c431-43d2-9e0e-73f4f4d82a8e';
-            console.log("Sending data to n8n:", quoteData);
-
-            const response = await fetch(n8nWebhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(quoteData)
+        body: JSON.stringify(quoteData)
             });
 
-            if (!response.ok) {
-                throw new Error(`Server returned status ${response.status}`);
-            }
+        if (!response.ok) {
+            throw new Error(`Server returned status ${response.status}`);
+        }
 
-            // Try to parse JSON if possible, but don't fail if it's just text
-            const text = await response.text();
-            try {
-                return JSON.parse(text);
-            } catch (e) {
-                return text;
-            }
+        // Try to parse JSON if possible, but don't fail if it's just text
+        const text = await response.text();
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            return text;
+        }
         }
 
         function toggleSqmInput(checkboxId, inputId) {
