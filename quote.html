@@ -543,45 +543,6 @@
         const text = await response.text();
         try {
             return JSON.parse(text);
-        } catch (e) {
-            return text;
-        }
-        }
-
-        function toggleSqmInput(checkboxId, inputId) {
-            const checkbox = document.getElementById(checkboxId);
-            const input = document.getElementById(inputId);
-
-            if (!checkbox || !input) return;
-
-            const wallsStoreyOptions = document.getElementById('walls-storey-options');
-
-            checkbox.addEventListener('change', () => {
-                if (checkbox.checked) {
-                    input.disabled = false;
-                    input.required = true;
-                    input.focus();
-                    if (checkboxId === 'area-walls' && wallsStoreyOptions) {
-                        wallsStoreyOptions.classList.remove('hidden');
-                    }
-                } else {
-                    input.disabled = true;
-                    input.required = false;
-                    input.value = '';
-                    if (checkboxId === 'area-walls' && wallsStoreyOptions) {
-                        wallsStoreyOptions.classList.add('hidden');
-                    }
-                }
-                calculateTotal();
-            });
-
-            input.addEventListener('input', calculateTotal);
-        }
-
-        function toggleInstallOptions() {
-            const selectedService = form.querySelector('input[name="serviceType"]:checked').value;
-
-            if (!installationOptions || !areasLegend || !removalAddons || !wallsAreaContainer) return;
 
             if (selectedService === 'Removal & Cleaning') {
                 installationOptions.classList.add('hidden');
