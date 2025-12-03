@@ -590,20 +590,29 @@
                     || 0;
 
                 const quoteRequest = {
-                    serviceType: form.querySelector('input[name="serviceType"]:checked').value,
-                    installationLevel: installLevel,
-                    areas: areas,
-                    wallStoreys: wallStoreys,
-                    totalSqm: totalSqm,
-                    sanitisingTreatment: sanitisingCheckbox ? sanitisingCheckbox.checked : false,
-                    preferredServiceDate: form.querySelector('input[name="preferredDate"]:checked').value,
-                    estimatedTotalCost: totalCost.toFixed(2),
-                    contact: {
-                        name: document.getElementById('contact-name').value,
-                        phone: document.getElementById('contact-phone').value,
-                        email: document.getElementById('contact-email').value,
-                    }
-                };
+    serviceType: form.querySelector('input[name="serviceType"]:checked').value,
+    installationLevel: installLevel,
+    areas: areas,
+    wallStoreys: wallStoreys,
+    totalSqm: totalSqm,
+    sanitisingTreatment: sanitisingCheckbox ? sanitisingCheckbox.checked : false,
+
+    // ⭐ NEW: send "this" or "next"
+    preferredServiceDate:
+        form.querySelector('input[name="preferredDate"]:checked').value === "This Week"
+        ? "this"
+        : "next",
+
+    estimatedTotalCost: totalCost.toFixed(2),
+    contact: {
+        name: document.getElementById('contact-name').value,
+        phone: document.getElementById('contact-phone').value,
+        email: document.getElementById('contact-email').value,
+    },
+
+    // ⭐ NEW: unique ID so the email is not sent twice in n8n
+    quoteId: "Q-" + Date.now()
+};
 
                 await sendToN8N(quoteRequest);
 
