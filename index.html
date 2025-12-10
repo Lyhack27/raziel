@@ -9,6 +9,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- SEO & Open Graph -->
+    <link rel="canonical" href="https://racielinsulation.com/">
+    <meta property="og:url" content="https://racielinsulation.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Raciel Insulation - Insulation Experts in Melbourne">
+    <meta property="og:description"
+        content="Increase comfort, reduce your energy bills, and improve your home's efficiency with our high-quality insulation solutions.">
+    <meta property="og:image" content="https://racielinsulation.com/imagenes/logo/loguito.png">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -494,7 +503,7 @@
                     <div class="w-24 h-1 bg-red-600 mx-auto mt-4"></div>
                 </div>
                 <div class="max-w-3xl mx-auto bg-slate-800 p-8 rounded-lg shadow-xl">
-                    <form>
+                    <form id="contact-form">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                             <div>
                                 <label for="name" class="block text-slate-300 mb-2">Name</label>
@@ -571,7 +580,7 @@
             <h2 class="text-3xl font-bold text-white mb-6 text-center">Get an Instant Quote for Your Job</h2>
             <p class="text-slate-400 text-center mb-6">Fill in the details below for a preliminary estimate. We'll
                 contact you to confirm.</p>
-            <form>
+            <form id="modal-quote-form">
                 <div class="mb-4">
                     <label for="job-type" class="block text-slate-300 mb-2">Type of Insulation</label>
                     <select id="job-type"
@@ -706,6 +715,90 @@
             installAreaInput.addEventListener('input', calculateInstallationCost);
             installTierInput.addEventListener('input', calculateInstallationCost);
             installFloorsInput.addEventListener('input', calculateInstallationCost);
+        }
+
+        // --- Webhook Submission Logic ---
+        const n8nWebhookUrl = 'https://n8n.solidiaai.com/webhook/aa675519-c431-43d2-9e0e-73f4f4d82a8e';
+
+        async function submitToN8N(data) {
+            try {
+                const response = await fetch(n8nWebhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (!response.ok) throw new Error('Submission failed');
+                return true;
+            } catch (error) {
+                console.error(error);
+                alert('There was an error sending your request. Please try again.');
+                return false;
+            }
+        }
+
+        // Contact Form Submission
+        const contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = contactForm.querySelector('button[type="submit"]');
+                const originalText = btn.textContent;
+                btn.disabled = true;
+                btn.textContent = 'Sending...';
+
+                const data = {
+                    serviceType: "Contact Inquiry",
+                    contact: {
+                        name: document.getElementById('name').value,
+                        email: document.getElementById('email').value,
+                        phone: document.getElementById('phone').value,
+                    },
+                    message: document.getElementById('message').value,
+                    domain: "https://racielinsulation.com",
+                    source_url: window.location.href,
+                    quoteId: "C-" + Date.now()
+                };
+
+                const success = await submitToN8N(data);
+                if (success) {
+                    alert('Thanks! We have received your message.');
+                    contactForm.reset();
+                }
+                btn.disabled = false;
+                btn.textContent = originalText;
+            });
+        }
+
+        // Modal Quote Form Submission
+        const modalQuoteForm = document.getElementById('modal-quote-form');
+        if (modalQuoteForm) {
+            modalQuoteForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = modalQuoteForm.querySelector('button[type="submit"]');
+                const originalText = btn.textContent;
+                btn.disabled = true;
+                btn.textContent = 'Sending...';
+
+                const data = {
+                    serviceType: document.getElementById('job-type').value,
+                    totalSqm: document.getElementById('area-size').value,
+                    contact: {
+                        email: document.getElementById('quote-email').value
+                    },
+                    domain: "https://racielinsulation.com",
+                    source_url: window.location.href,
+                    quoteId: "IQ-" + Date.now()
+                };
+
+                const success = await submitToN8N(data);
+                if (success) {
+                    alert('Quote request sent! We will contact you shortly.');
+                    modalQuoteForm.reset();
+                    closeModal();
+                }
+                btn.disabled = false;
+                btn.textContent = originalText;
+            });
         }
 
     </script>

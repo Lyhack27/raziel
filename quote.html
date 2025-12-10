@@ -9,6 +9,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- SEO & Open Graph -->
+    <link rel="canonical" href="https://racielinsulation.com/quote.html">
+    <meta property="og:url" content="https://racielinsulation.com/quote.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Instant Quote - Raciel Insulation">
+    <meta property="og:description"
+        content="Get an instant quote for your insulation needs. Professional installation and removal services in Melbourne.">
+    <meta property="og:image" content="https://racielinsulation.com/imagenes/logo/loguito.png">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -590,29 +599,30 @@
                     || 0;
 
                 const quoteRequest = {
-    serviceType: form.querySelector('input[name="serviceType"]:checked').value,
-    installationLevel: installLevel,
-    areas: areas,
-    wallStoreys: wallStoreys,
-    totalSqm: totalSqm,
-    sanitisingTreatment: sanitisingCheckbox ? sanitisingCheckbox.checked : false,
+                    serviceType: form.querySelector('input[name="serviceType"]:checked').value,
+                    installationLevel: installLevel,
+                    areas: areas,
+                    wallStoreys: wallStoreys,
+                    totalSqm: totalSqm,
+                    sanitisingTreatment: sanitisingCheckbox ? sanitisingCheckbox.checked : false,
 
-    // ⭐ NEW: send "this" or "next"
-    preferredServiceDate:
-        form.querySelector('input[name="preferredDate"]:checked').value === "This Week"
-        ? "this"
-        : "next",
+                    // ⭐ NEW: send "this" or "next"
+                    preferredServiceDate:
+                        form.querySelector('input[name="preferredDate"]:checked').value === "This Week"
+                            ? "this"
+                            : "next",
 
-    estimatedTotalCost: totalCost.toFixed(2),
-    contact: {
-        name: document.getElementById('contact-name').value,
-        phone: document.getElementById('contact-phone').value,
-        email: document.getElementById('contact-email').value,
-    },
+                    estimatedTotalCost: totalCost.toFixed(2),
+                    contact: {
+                        name: document.getElementById('contact-name').value,
+                        phone: document.getElementById('contact-phone').value,
+                        email: document.getElementById('contact-email').value,
+                    },
 
-    // ⭐ NEW: unique ID so the email is not sent twice in n8n
-    quoteId: "Q-" + Date.now()
-};
+                    // ⭐ NEW: unique ID so the email is not sent twice in n8n
+                    quoteId: "Q-" + Date.now(),
+                    domain: "https://racielinsulation.com"
+                };
 
                 await sendToN8N(quoteRequest);
 
