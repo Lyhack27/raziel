@@ -1,0 +1,254 @@
+{
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "aa675519-c431-43d2-9e0e-73f4f4d82a8e",
+                "options": {}
+            },
+            "id": "5d382e2c-1828-4e94-9f22-7487a950a70d",
+            "name": "Receive Quote from Web",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                -880,
+                40
+            ],
+            "webhookId": "aa675519-c431-43d2-9e0e-73f4f4d82a8e"
+        },
+        {
+            "parameters": {
+                "functionCode": "// Obtenemos los datos.\nlet data = $json.body || $json;\nif (typeof data === 'string') {\n  try {\n    data = JSON.parse(data);\n  } catch (e) {}\n}\n// Fix date for consistency\nif (data.preferredServiceDate === \"this\") data.preferredServiceDate = \"This Week\";\nif (data.preferredServiceDate === \"next\") data.preferredServiceDate = \"Next Week\";\n\nreturn data;"
+            },
+            "id": "27640920-13d3-4f0b-a621-a63b78fe5a4a",
+            "name": "Fix Data",
+            "type": "n8n-nodes-base.functionItem",
+            "position": [
+                -660,
+                40
+            ],
+            "typeVersion": 1
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "string": [
+                        {
+                            "value1": "={{ $json.serviceType }}",
+                            "operation": "equal",
+                            "value2": "Contact Inquiry"
+                        }
+                    ]
+                }
+            },
+            "id": "new-node-switch",
+            "name": "Is Contact Form?",
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 1,
+            "position": [
+                -460,
+                40
+            ]
+        },
+        {
+            "parameters": {
+                "sendTo": "razielinsulation@gmail.com",
+                "subject": "New Contact Message from {{ $json.contact.name }}",
+                "message": "Name: {{ $json.contact.name }}\nEmail: {{ $json.contact.email }}\nPhone: {{ $json.contact.phone }}\nMessage: {{ $json.message }}\n\nSource: {{ $json.source_url }}",
+                "options": {}
+            },
+            "id": "new-node-gmail-contact",
+            "name": "Send Contact Email",
+            "type": "n8n-nodes-base.gmail",
+            "typeVersion": 2.1,
+            "position": [
+                -200,
+                -160
+            ],
+            "credentials": {
+                "gmailOAuth2": {
+                    "id": "tFigzIN0822VVseh",
+                    "name": "Gmail account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "keepOnlySet": true,
+                "values": {
+                    "string": [
+                        {
+                            "name": "DATE",
+                            "value": "={{ $now.toFormat(\"dd/MM/yyyy\") }}"
+                        },
+                        {
+                            "name": "CUSTOMER_NAME",
+                            "value": "={{ $json.contact.name || 'Valued Customer' }}"
+                        },
+                        {
+                            "name": "CUSTOMER_EMAIL",
+                            "value": "={{ $json.contact.email }}"
+                        },
+                        {
+                            "name": "CUSTOMER_PHONE",
+                            "value": "={{ $json.contact.phone || 'N/A' }}"
+                        },
+                        {
+                            "name": "PREFERRED_DATE",
+                            "value": "={{ $json.preferredServiceDate || 'As soon as possible' }}"
+                        },
+                        {
+                            "name": "SERVICE_TYPE",
+                            "value": "={{ $json.serviceType }}"
+                        },
+                        {
+                            "name": "INSTALLATION_DETAILS",
+                            "value": "={{ $json.installationLevel ? `<strong>Installation Quality:</strong> ${$json.installationLevel}` : \"\" }}"
+                        },
+                        {
+                            "name": "SANITISING_SERVICE",
+                            "value": "={{ $json.sanitisingTreatment ? `<strong style=\"color:#e53e3e;\">Add-on:</strong> Ceiling Sanitising Treatment ($20.00)<br>` : \"\" }}"
+                        },
+                        {
+                            "name": "AREA_DETAILS_CEILING",
+                            "value": "={{ $json.areas && $json.areas.ceiling_sqm ? `<strong>Ceiling / Roof:</strong> ${$json.areas.ceiling_sqm} m²<br>` : \"\" }}"
+                        },
+                        {
+                            "name": "AREA_DETAILS_WALLS",
+                            "value": "={{ $json.areas && $json.areas.walls_sqm ? `<strong>Walls:</strong> ${$json.areas.walls_sqm} m²<br>` : \"\" }}"
+                        },
+                        {
+                            "name": "WALL_STOREY_DETAILS",
+                            "value": "={{ $json.wallStoreys ? `&nbsp;&nbsp;&nbsp;↳ <em>Storeys: ${$json.wallStoreys === '1' ? 'Single Storey' : 'Double Storey'}</em><br>` : \"\" }}"
+                        },
+                        {
+                            "name": "AREA_DETAILS_FLOOR",
+                            "value": "={{ $json.areas && $json.areas.floor_sqm ? `<strong>Floor (Underfloor):</strong> ${$json.areas.floor_sqm} m²<br>` : \"\" }}"
+                        },
+                        {
+                            "name": "TOTAL_SQM",
+                            "value": "={{ $json.totalSqm || 0 }}"
+                        },
+                        {
+                            "name": "ESTIMATED_TOTAL_COST",
+                            "value": "={{ $json.estimatedTotalCost || 'Pending Quote' }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "f2893567-8ff3-44fd-a994-ee8746a48dfb",
+            "name": "Prepare Data",
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 1,
+            "position": [
+                -200,
+                180
+            ]
+        },
+        {
+            "parameters": {
+                "sendTo": "={{ $node[\"Prepare Data\"].json.CUSTOMER_EMAIL }}",
+                "subject": "=Your Quote from Raziel Insulation (Estimate: ${{ $node[\"Prepare Data\"].json.ESTIMATED_TOTAL_COST }})",
+                "message": "==<div style=\"margin:0; padding:0; background:#0a192f; font-family: Inter, Arial, sans-serif; color:#e2e8f0;\"><div style=\"max-width:600px; margin:0 auto; background:#0f172a; border-radius:16px; overflow:hidden;\"><div style=\"padding:40px 20px; text-align:center; background: linear-gradient(135deg, #0a192f 0%, #172a46 100%);\"><img src=\"https://raw.githubusercontent.com/Lyhack27/raziel/main/imagenes/logo/loguito.png\" alt=\"Raciel Insulation Logo\" style=\"width:160px; margin-bottom:20px;\"/><h1 style=\"margin:0; font-size:26px; font-weight:700; color:#fbbf24;\">Your Quote Request Was Received!</h1><p style=\"margin:8px 0 0; font-size:15px; color:#94a3b8;\">Thanks {{$node[\"Prepare Data\"].json.CUSTOMER_NAME}}, we’re preparing your estimate.</p></div><div style=\"padding:30px;\"><p style=\"font-size:15px; line-height:1.6;\">We appreciate your interest in <strong>Raciel Insulation</strong>. One of our specialists will contact you soon.</p><div style=\"margin-top:25px;\"><h3 style=\"color:#fbbf24; margin-bottom:10px;\">Your Request Summary</h3><p style=\"line-height:1.6; margin:0;\"><strong>Service Type:</strong> {{$node[\"Prepare Data\"].json.SERVICE_TYPE}}<br><strong>Preferred Date:</strong> {{$node[\"Prepare Data\"].json.PREFERRED_DATE}}<br><br>{{$node[\"Prepare Data\"].json.AREA_DETAILS_CEILING}}{{$node[\"Prepare Data\"].json.AREA_DETAILS_WALLS}}{{$node[\"Prepare Data\"].json.WALL_STOREY_DETAILS}}{{$node[\"Prepare Data\"].json.AREA_DETAILS_FLOOR}}<strong>Total Area:</strong> {{$node[\"Prepare Data\"].json.TOTAL_SQM}} m²<br><br><strong style=\"font-size:17px; color:#fbbf24;\">Estimated Cost: ${{$node[\"Prepare Data\"].json.ESTIMATED_TOTAL_COST}}</strong></p></div><div style=\"text-align:center; margin:30px 0 20px;\"><a href=\"mailto:razielinsulation@gmail.com\" style=\"background:#dc2626; color:#fff; padding:14px 28px; text-decoration:none; font-size:16px; font-weight:600; border-radius:8px; display:inline-block;\">Contact Our Team</a></div><p style=\"font-size:12px; color:#64748b; text-align:center;\">© 2025 Raciel Insulation · Melbourne, Australia</p></div></div></div>",
+                "options": {
+                    "bccList": "razielinsulation@gmail.com"
+                }
+            },
+            "id": "bec49d93-0606-459b-8ebb-4d401daa2234",
+            "name": "Send Email to Customer",
+            "type": "n8n-nodes-base.gmail",
+            "typeVersion": 2.1,
+            "position": [
+                20,
+                80
+            ],
+            "credentials": {
+                "gmailOAuth2": {
+                    "id": "tFigzIN0822VVseh",
+                    "name": "Gmail account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "sendTo": "razielinsulation@gmail.com",
+                "subject": "=New Quote Request from {{$node[\"Prepare Data\"].json.CUSTOMER_NAME}}",
+                "message": "==<div style=\"margin:0; padding:0; background:#0a192f; font-family: Inter, Arial, sans-serif; color:#e2e8f0;\"><div style=\"max-width:600px; margin:0 auto; background:#0f172a; border-radius:16px; overflow:hidden;\"><div style=\"padding:40px 20px; text-align:center; background: linear-gradient(135deg, #0a192f 0%, #172a46 100%);\"><img src=\"https://raw.githubusercontent.com/Lyhack27/raziel/main/imagenes/logo/loguito.png\" alt=\"Raciel Insulation Logo\" style=\"width:160px; margin-bottom:20px;\"/><h1 style=\"margin:0; font-size:26px; font-weight:700; color:#fbbf24;\">New Quote Received</h1></div><div style=\"padding:30px;\"><p><strong>Name:</strong> {{$node[\"Prepare Data\"].json.CUSTOMER_NAME}}<br><strong>Email:</strong> {{$node[\"Prepare Data\"].json.CUSTOMER_EMAIL}}<br><strong>Phone:</strong> {{$node[\"Prepare Data\"].json.CUSTOMER_PHONE}}<br><strong>Preferred Date:</strong> {{$node[\"Prepare Data\"].json.PREFERRED_DATE}}<br><strong>Service Type:</strong> {{$node[\"Prepare Data\"].json.SERVICE_TYPE}}<br>{{$node[\"Prepare Data\"].json.AREA_DETAILS_CEILING}}{{$node[\"Prepare Data\"].json.AREA_DETAILS_WALLS}}{{$node[\"Prepare Data\"].json.WALL_STOREY_DETAILS}}{{$node[\"Prepare Data\"].json.AREA_DETAILS_FLOOR}}<strong>Total Sqm:</strong> {{$node[\"Prepare Data\"].json.TOTAL_SQM}}<br><strong>Estimate:</strong> ${{$node[\"Prepare Data\"].json.ESTIMATED_TOTAL_COST}}</p></div></div></div>",
+                "options": {}
+            },
+            "id": "8be178b9-01e1-4238-8719-035e319c808d",
+            "name": "Send Email to Admin",
+            "type": "n8n-nodes-base.gmail",
+            "typeVersion": 2.1,
+            "position": [
+                20,
+                280
+            ],
+            "credentials": {
+                "gmailOAuth2": {
+                    "id": "tFigzIN0822VVseh",
+                    "name": "Gmail account"
+                }
+            }
+        }
+    ],
+    "connections": {
+        "Receive Quote from Web": {
+            "main": [
+                [
+                    {
+                        "node": "Fix Data",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Fix Data": {
+            "main": [
+                [
+                    {
+                        "node": "Is Contact Form?",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Is Contact Form?": {
+            "main": [
+                [
+                    {
+                        "node": "Send Contact Email",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Prepare Data",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Prepare Data": {
+            "main": [
+                [
+                    {
+                        "node": "Send Email to Customer",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Send Email to Admin",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}
